@@ -110,3 +110,6 @@ app.post("/upload/:loadNumber", upload.single("bolImage"), async (req, res) => {
 app.listen(3000, () => {
   console.log("Flikdrop DRIVER server running on port 3000");
 });
+app.get("/", (req, res) => {
+  res.send("Flikdrop Driver Upload Service is Live 🚚📸");
+});
