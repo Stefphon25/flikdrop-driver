@@ -107,6 +107,7 @@ app.post("/upload/:loadNumber", upload.single("bolImage"), async (req, res) => {
   }
 });
 
+<<<<<<< HEAD
 app.post("/register-load", express.json(), (req, res) => {
   const { loadNumber, email } = req.body;
 
@@ -118,6 +119,8 @@ app.post("/register-load", express.json(), (req, res) => {
   res.status(200).send("Load registered successfully.");
 });
 
+=======
+>>>>>>> 794d74da65fbea921bbb2da679c842d338f4e05b
 app.listen(3000, () => {
   console.log("Flikdrop DRIVER server running on port 3000");
 });
