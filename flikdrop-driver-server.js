@@ -11,12 +11,20 @@ const loadStore = {
   "test123": { email: process.env.EMAIL_USER || "your@email.com" } // sample for test
 };
 
+// Register load route
 app.post("/register-load", express.json(), (req, res) => {
   const { loadNumber, email } = req.body;
   if (!loadNumber || !email) return res.status(400).send("Missing load number or email.");
   loadStore[loadNumber] = { email };
   res.status(200).send("Load registered successfully.");
 });
+
+// Upload form page (GET)
+app.get("/upload/:loadNumber", (req, res) => {
+  const loadNumber = req.params.loadNumber;
+  const entry = loadStore[loadNumber];
+
+  if (!entry) return res.status(404).send("Invalid load number.");
 
   res.send(`
     <!DOCTYPE html>
@@ -52,6 +60,7 @@ app.post("/register-load", express.json(), (req, res) => {
   `);
 });
 
+// Upload submission (POST)
 app.post("/upload/:loadNumber", upload.single("bolImage"), async (req, res) => {
   const loadNumber = req.params.loadNumber;
   const entry = loadStore[loadNumber];
@@ -108,20 +117,12 @@ app.post("/upload/:loadNumber", upload.single("bolImage"), async (req, res) => {
   }
 });
 
-app.post("/register-load", express.json(), (req, res) => {
-  const { loadNumber, email } = req.body;
-
-  if (!loadNumber || !email) {
-    return res.status(400).send("Missing load number or email.");
-  }
-
-  loadStore[loadNumber] = { email };
-  res.status(200).send("Load registered successfully.");
-});
-
-app.listen(3000, () => {
-  console.log("Flikdrop DRIVER server running on port 3000");
-});
+// Root endpoint
 app.get("/", (req, res) => {
   res.send("Flikdrop Driver Upload Service is Live 🚚📸");
+});
+
+// Start server
+app.listen(3000, () => {
+  console.log("Flikdrop DRIVER server running on port 3000");
 });
