@@ -26,38 +26,47 @@ app.get("/upload/:loadNumber", (req, res) => {
 
   if (!entry) return res.status(404).send("Invalid load number.");
 
-  res.send(`
-    <!DOCTYPE html>
-    <html lang="en">
-    <head>
-      <meta charset="UTF-8" />
-      <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-      <title>Flikdrop Upload</title>
-      <script src="https://cdn.tailwindcss.com"></script>
-      <script>
-        function autoSubmit(input) {
-          if (input.files.length > 0) {
-            document.getElementById('uploadForm').submit();
-          }
+res.send(`
+  <!DOCTYPE html>
+  <html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Flikdrop Upload</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      function enableUpload() {
+        const consentBox = document.getElementById("consent");
+        const uploadInput = document.getElementById("bolImage");
+        uploadInput.disabled = !consentBox.checked;
+      }
+      function autoSubmit(input) {
+        if (input.files.length > 0) {
+          document.getElementById('uploadForm').submit();
         }
-      </script>
-    </head>
-    <body class="bg-gray-100 font-sans">
-      <div class="min-h-screen flex items-center justify-center px-4">
-        <div class="bg-white rounded-3xl shadow-lg max-w-md w-full text-center p-6">
-          <div class="bg-gradient-to-r from-indigo-600 to-blue-500 text-white rounded-2xl p-6 mb-6">
-            <h1 class="text-2xl font-bold mb-1">You completed the load!</h1>
-            <p class="text-sm opacity-80">Now drop the Flik ⬇️</p>
-          </div>
-          <form id="uploadForm" action="/upload/${loadNumber}" method="POST" enctype="multipart/form-data">
-            <label for="bolImage" class="block text-lg font-medium text-gray-700 mb-2">ADD POD</label>
-            <input type="file" id="bolImage" name="bolImage" accept="image/*" capture="environment" onchange="autoSubmit(this)" class="block w-full text-center bg-blue-50 p-4 rounded-xl shadow-inner border-2 border-dashed border-blue-300 cursor-pointer hover:bg-blue-100" required>
-          </form>
+      }
+    </script>
+  </head>
+  <body class="bg-gray-100 font-sans">
+    <div class="min-h-screen flex items-center justify-center px-4">
+      <div class="bg-white rounded-3xl shadow-lg max-w-md w-full text-center p-6">
+        <div class="bg-gradient-to-r from-indigo-600 to-blue-500 text-white rounded-2xl p-6 mb-6">
+          <h1 class="text-2xl font-bold mb-1">You completed the load!</h1>
+          <p class="text-sm opacity-80">Now drop the Flik ⬇️</p>
         </div>
+        <form id="uploadForm" action="/upload/${loadNumber}" method="POST" enctype="multipart/form-data">
+          <label class="block text-left text-gray-700 mb-2">
+            <input type="checkbox" id="consent" onchange="enableUpload()" class="mr-2">
+            I agree to receive SMS updates from Flikdrop. Msg & data rates may apply.
+          </label>
+          <label for="bolImage" class="block text-lg font-medium text-gray-700 mb-2">ADD POD</label>
+          <input type="file" id="bolImage" name="bolImage" accept="image/*,.pdf" capture="environment" onchange="autoSubmit(this)" class="block w-full text-center bg-blue-50 p-4 rounded-xl shadow-inner border-2 border-dashed border-blue-300 cursor-pointer hover:bg-blue-100" required disabled>
+        </form>
       </div>
-    </body>
-    </html>
-  `);
+    </div>
+  </body>
+  </html>
+`);
 });
 
 // Upload submission (POST)
