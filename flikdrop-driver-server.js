@@ -56,8 +56,8 @@ app.get("/upload/:loadNumber", (req, res) => {
           </div>
           <form id="uploadForm" action="/upload/${loadNumber}" method="POST" enctype="multipart/form-data">
             <label class="block text-left text-gray-700 mb-2">
-              <input type="checkbox" id="consent" onchange="enableUpload()" class="mr-2">
-              By clicking the link, you agree to receive text messages from Flikdrop to complete paperwork submissions. Msg & data rates may apply. You may receive up to 3 messages per submission. Text STOP to unsubscribe.
+              <input type="checkbox" id="consent" onchange="enableUpload()" required class="mr-2">
+              By checking this box, you agree to receive automated text messages from Flikdrop to complete paperwork submissions. Msg & data rates may apply. You may receive up to 3 messages per submission. Text STOP to unsubscribe.
             </label>
             <label for="bolImage" class="block text-lg font-medium text-gray-700 mb-2">ADD POD</label>
             <input type="file" id="bolImage" name="bolImage" accept="image/*,.pdf" capture="environment" onchange="autoSubmit(this)" class="block w-full text-center bg-blue-50 p-4 rounded-xl shadow-inner border-2 border-dashed border-blue-300 cursor-pointer hover:bg-blue-100" required disabled>
